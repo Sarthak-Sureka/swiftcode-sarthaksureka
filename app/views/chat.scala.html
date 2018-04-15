@@ -12,7 +12,7 @@
     <md-card layout="column" flex="none" style="width: 800px">
         <md-content id="message-pane" layout="column" flex="100">
             <div ng-repeat="msg in messages" layout="column" layout-align="{{ msg.sender == 'BOT' ? 'start start' : 'start end'}} ">
-                <md-card class="message-card" ng-style="msg.sender == 'BOT' ? {'background-color': '#FFB74D'} : {'background-color': '#81C784'}">
+                <md-card class="message-card" ng-style="msg.sender == 'BOT' ? {'background-color': '#579ded', 'color': '#ffffff'} : {'background-color': '#e09f67', 'color': '#ffffff'}">
                     <span>{{msg.text}}</span>
                 </md-card>
             </div>
