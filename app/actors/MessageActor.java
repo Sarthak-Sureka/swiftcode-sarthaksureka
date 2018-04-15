@@ -39,17 +39,22 @@ public class MessageActor extends UntypedActor {
     public void onReceive(Object message) throws Throwable {
         //Send back the response
         ObjectMapper mapper = new ObjectMapper();
+        Message messageObject = new Message();
         if (message instanceof String) {
-            Message messageObject = new Message();
             messageObject.text = (String) message;
             messageObject.sender = Message.Sender.USER;
             out.tell(mapper.writeValueAsString(messageObject), self());
             //The function inside the tell converts the object into aa JSON string and self() will refer to the sender itself
             //newsAgentResponse = newsAgentService.getnewsagentresponse(messageObject.text,UUID.randomUUID()); not required
-            String query = newsAgentService.getnewsagentresponse("Find" + message, UUID.randomUUID()).query;
+            String query = newsAgentService.getnewsagentresponse("Find " + message, UUID.randomUUID()).query;
             feedResponse = feedService.getfeedresponse(query);
             messageObject.text = (feedResponse.title == null) ? "No results found" : "Showing results for: " + query;
             messageObject.feedResponse = feedResponse;
+            messageObject.sender = Message.Sender.BOT;
+            out.tell(mapper.writeValueAsString(messageObject), self());
+        }
+        else{
+            messageObject.text = "Input is invalid";
             messageObject.sender = Message.Sender.BOT;
             out.tell(mapper.writeValueAsString(messageObject), self());
         }
